@@ -1,6 +1,6 @@
 #!/bin/sh
 
-while getopts "s:f:t:e:h" opt
+while getopts "s:f:t:e:c:h" opt
 do
     case $opt in
     s )
@@ -23,11 +23,14 @@ do
         fi;;
     e )
         entry=$OPTARG;;
+    c )
+        config=$OPTARG;;
     h )
         echo "-s <path>\t source directory.";
         echo "-f <path>\t framework directory.";
         echo "-t <path>\t target directory.";
         echo "-e <filename>\t entry filename.";
+        echo "-c <filename>\t config filename.";
         exit;;
     ? )
         echo "undefined parameter.";
@@ -35,6 +38,7 @@ do
         echo "-f <path>\t framework directory.";
         echo "-t <path>\t target directory.";
         echo "-e <filename>\t entry filename.";
+        echo "-c <filename>\t config filename.";
         exit;;
     esac
 done
@@ -53,6 +57,10 @@ if [ -z $frame ]; then
 fi
 if [ ! -e "$src/$entry" ]; then
     echo "Cannot found entry file in $src";
+    exit;
+fi
+if [ ! -e "$config" ]; then
+    echo "Cannot found config file $config";
     exit;
 fi
 
@@ -87,6 +95,11 @@ fi
 ##入口文件替换
 if [ ! -z $entry ]; then
     mv "$target/$entry" "$target/index.php";
+fi
+
+##配置文件替换
+if [ ! -z $config ]; then
+    cp "$config" "$target/protected/config/main.php";
 fi
 
 
