@@ -1,7 +1,7 @@
 service iptables start
 service php-fpm start
 /home/admin/install/nginx/sbin/nginx
-ss-client -s  -p  -m start
+sh /home/admin/www/protected/commands/shell/ss-client.sh -s  -p  -m start
 
 0 * * * * sudo service iptables save
 * * 1 * * tsocks /usr/local/bin/curl -s -X GET https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt > /home/admin/www/protected/data/pac/gfwlist.txt
